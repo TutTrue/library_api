@@ -1,0 +1,79 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider          = "mysql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+}
+
+model Book {
+  id              Int    @id @default(autoincrement())
+  title           String
+  publicationYear Int
+
+  genres       Genre[]
+  Publisher    Publisher?    @relation(fields: [publisherId], references: [id])
+  publisherId  Int?
+  Auther       Auther?       @relation(fields: [autherId], references: [id])
+  autherId     Int?
+  reservations Reservation[]
+  Borrowing    Borrowing[]
+}
+
+model Genre {
+  id    Int    @id @default(autoincrement())
+  name  String
+  books Book[]
+}
+
+model Publisher {
+  id      Int    @id @default(autoincrement())
+  name    String
+  address String
+  phone   String
+  books   Book[]
+}
+
+model Auther {
+  id          Int    @id @default(autoincrement())
+  name        String
+  nationality String
+  books       Book[]
+}
+
+model Reservation {
+  id   Int      @id @default(autoincrement())
+  date DateTime @default(now())
+
+  Book     Book?   @relation(fields: [bookId], references: [id])
+  bookId   Int?
+  Member   Member? @relation(fields: [memberId], references: [id])
+  memberId Int?
+}
+
+model Borrowing {
+  id         Int      @id @default(autoincrement())
+  date       DateTime @default(now())
+  returnDate DateTime
+
+  Book     Book?   @relation(fields: [bookId], references: [id])
+  bookId   Int?
+  Member   Member? @relation(fields: [memberId], references: [id])
+  memberId Int?
+}
+
+model Member {
+  id      Int    @id @default(autoincrement())
+  name    String
+  address String
+  phone   String
+  email   String
+
+  Borrowing   Borrowing[]
+  reservation Reservation[]
+}

@@ -14,12 +14,11 @@ datasource db {
 model Book {
   id              Int    @id @default(autoincrement())
   title           String
+  description     String
   publicationYear Int
 
   genres       Genre[]
-  Publisher    Publisher?    @relation(fields: [publisherId], references: [id])
-  publisherId  Int?
-  Auther       Auther?       @relation(fields: [autherId], references: [id])
+  Author       Author?       @relation(fields: [autherId], references: [id])
   autherId     Int?
   reservations Reservation[]
   Borrowing    Borrowing[]
@@ -31,19 +30,12 @@ model Genre {
   books Book[]
 }
 
-model Publisher {
-  id      Int    @id @default(autoincrement())
-  name    String
-  address String
-  phone   String
-  books   Book[]
-}
+model Author {
+  id       Int @id @default(autoincrement())
+  memberId Int @unique
 
-model Auther {
-  id          Int    @id @default(autoincrement())
-  name        String
-  nationality String
-  books       Book[]
+  member Member @relation("member", fields: [memberId], references: [id])
+  books  Book[]
 }
 
 model Reservation {
@@ -68,12 +60,14 @@ model Borrowing {
 }
 
 model Member {
-  id      Int    @id @default(autoincrement())
-  name    String
-  address String
-  phone   String
-  email   String
+  id       Int    @id @default(autoincrement())
+  name     String
+  address  String
+  phone    String
+  email    String @unique
+  password String
 
   Borrowing   Borrowing[]
   reservation Reservation[]
+  Author      Author?       @relation("member")
 }

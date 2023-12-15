@@ -1,11 +1,11 @@
 import { Router } from "express";
 import memberRouter from "./member.js";
 import bookRouter from "./book.js";
-import autherRouter from "./auther.js";
+import authorRouter from "./author.js";
 const router = Router();
 
 router.use("/book", bookRouter);
 router.use("/member", memberRouter);
-router.use("/auther", autherRouter);
+router.use("/author", authorRouter);
 
 export default router;

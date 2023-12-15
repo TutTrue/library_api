@@ -2,19 +2,19 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-const getAuthers = async (req, res) => {
+const getAuthors = async (req, res) => {
   try {
-    const authers = await prisma.auther.findMany();
+    const authers = await prisma.author.findMany();
     res.json(authers);
   } catch (error) {
     res.json({ error: error.message });
   }
 };
 
-const createAuther = async (req, res) => {
+const createAuthor = async (req, res) => {
   try {
     const { name, nationality } = req.body;
-    const auther = await prisma.auther.create({
+    const auther = await prisma.author.create({
       data: {
         name,
         nationality,
@@ -26,4 +26,4 @@ const createAuther = async (req, res) => {
   }
 };
 
-export default { getAuthers, createAuther };
+export default { getAuthors, createAuthor };

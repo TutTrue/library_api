@@ -17,11 +17,28 @@ const getmember = async (req, res) => {
       where: { email: email },
       include: {
         Author: true,
-      }
+      },
     });
     console.log(member);
-    if (member.Author != null)
-      member.isAuthor = true;
+    if (member.Author != null) member.isAuthor = true;
+    res.status(200).json(member);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+const getmemberById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const member = await prisma.member.findUnique({
+      where: { id: Number(id) },
+      include: {
+        Author: true,
+      },
+    });
+    console.log(member);
+    if (!member) return res.status(404).json(null);
+    if (member.Author != null) member.isAuthor = true;
     res.status(200).json(member);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -54,4 +71,4 @@ const createmember = async (req, res) => {
   }
 };
 
-export default { getmembers, getmember, createmember };
+export default { getmembers, getmember, createmember, getmemberById };

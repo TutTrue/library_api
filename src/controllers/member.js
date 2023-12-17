@@ -12,12 +12,17 @@ const getmembers = async (req, res) => {
 
 const getmember = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { email } = req.body;
     const member = await prisma.member.findUnique({
-      where: { id: Number(id) },
-      include: { author: true },
+      where: { email: email },
+      include: {
+        Author: true,
+      }
     });
-    res.status(200).json({ member });
+    console.log(member);
+    if (member.Author != null)
+      member.isAuthor = true;
+    res.status(200).json(member);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -36,11 +41,11 @@ const createmember = async (req, res) => {
       },
     });
 
-    if (isAuthor) {
+    if (isAuthor === true) {
       await prisma.author.create({
         data: {
           memberId: member.id,
-        }
+        },
       });
     }
     res.status(201).json({ member });

@@ -4,7 +4,9 @@ const prisma = new PrismaClient();
 
 const getAuthors = async (req, res) => {
   try {
-    const authers = await prisma.author.findMany();
+    const authers = await prisma.author.findMany({
+      include: { books: true },
+    });
     res.json(authers);
   } catch (error) {
     res.json({ error: error.message });

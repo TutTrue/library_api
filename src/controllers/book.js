@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 const getBooks = async (req, res) => {
   try {
     const books = await prisma.book.findMany();
-    res.status(200).json({ books });
+    res.status(200).json(books);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

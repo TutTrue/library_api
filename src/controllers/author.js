@@ -4,10 +4,10 @@ const prisma = new PrismaClient();
 
 const getAuthors = async (req, res) => {
   try {
-    const authers = await prisma.author.findMany({
+    const authors = await prisma.author.findMany({
       include: { books: true },
     });
-    res.json(authers);
+    res.json(authors);
   } catch (error) {
     res.json({ error: error.message });
   }
@@ -16,13 +16,13 @@ const getAuthors = async (req, res) => {
 const createAuthor = async (req, res) => {
   try {
     const { name, nationality } = req.body;
-    const auther = await prisma.author.create({
+    const author = await prisma.author.create({
       data: {
         name,
         nationality,
       },
     });
-    res.json(auther);
+    res.json(author);
   } catch (error) {
     res.json({ error: error.message });
   }

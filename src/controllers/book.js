@@ -45,4 +45,16 @@ const createBook = async (req, res) => {
   }
 };
 
-export default { getBooks, getBook, createBook };
+const getBooksByAuthor = async (req, res) => {
+  try {
+    const { authorId } = req.params;
+    const books = await prisma.book.findMany({
+      where: { authorId: Number(authorId) },
+    });
+    res.status(200).json(books);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+export default { getBooks, getBook, createBook, getBooksByAuthor };

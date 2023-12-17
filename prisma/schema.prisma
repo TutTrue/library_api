@@ -18,8 +18,8 @@ model Book {
   publicationYear Int
 
   genres       Genre[]
-  Author       Author?       @relation(fields: [autherId], references: [id])
-  autherId     Int?
+  Author       Author?       @relation(fields: [authorId], references: [id])
+  authorId     Int?
   reservations Reservation[]
   Borrowing    Borrowing[]
 }

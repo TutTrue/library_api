@@ -71,4 +71,25 @@ const createmember = async (req, res) => {
   }
 };
 
-export default { getmembers, getmember, createmember, getmemberById };
+const updatemember = async (req, res) => {
+  console.log(req.body, req.params);
+  try {
+    const { id } = req.params;
+    const { password } = req.body;
+    const member = await prisma.member.update({
+      where: { id: Number(id) },
+      data: {
+        password,
+      },
+      include: {
+        Author: true,
+      },
+    });
+    if (member.Author != null) member.isAuthor = true;
+    res.status(200).json(member);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+export default { getmembers, getmember, createmember, getmemberById, updatemember };

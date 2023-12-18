@@ -28,4 +28,17 @@ const createAuthor = async (req, res) => {
   }
 };
 
-export default { getAuthors, createAuthor };
+const getAuthor = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const author = await prisma.author.findUnique({
+      where: { id: Number(id) },
+      include: { books: true },
+    });
+    res.json(author);
+  } catch (error) {
+    res.json({ error: error.message });
+  }
+};
+
+export default { getAuthors, createAuthor, getAuthor };

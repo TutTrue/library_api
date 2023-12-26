@@ -27,13 +27,15 @@ const getBook = async (req, res) => {
 };
 
 const createBook = async (req, res) => {
+  console.log(req.body);
   try {
-    const { title, authorId, description } = req.body;
+    const { title, authorId, description, publicationYear } = req.body;
     const book = await prisma.book.create({
       data: {
         title,
         description,
-        publicationYear: new Date().getFullYear(),
+        publicationYear,
+        // publicationYear: new Date().getFullYear(),
         Author: {
           connect: {
             id: Number(authorId),
@@ -41,8 +43,9 @@ const createBook = async (req, res) => {
         },
       },
     });
-    res.status(201).json({ book });
+    res.status(201).json(book);
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: error.message });
   }
 };
